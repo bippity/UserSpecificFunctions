@@ -32,15 +32,15 @@
   <ItemGroup>
     <Reference Include="Mono.Data.Sqlite, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\tshock_4.3.16\ServerPlugins\Mono.Data.Sqlite.dll</HintPath>
+      <HintPath>..\..\..\TShockRefs\Mono.Data.Sqlite.dll</HintPath>
     </Reference>
-    <Reference Include="MySql.Data, Version=6.9.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+    <Reference Include="MySql.Data, Version=6.9.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\tshock_4.3.16\ServerPlugins\MySql.Data.dll</HintPath>
+      <HintPath>..\..\..\TShockRefs\MySql.Data.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\tshock_4.3.16\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\TShockRefs\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -50,13 +50,13 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="TerrariaServer, Version=1.3.0.6, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="TerrariaServer, Version=1.3.1.1, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\tshock_4.3.16\TerrariaServer.exe</HintPath>
+      <HintPath>..\..\..\TShockRefs\TerrariaServer.exe</HintPath>
     </Reference>
-    <Reference Include="TShockAPI, Version=4.3.12.0, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="TShockAPI, Version=4.3.17.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\tshock_4.3.16\ServerPlugins\TShockAPI.dll</HintPath>
+      <HintPath>..\..\..\TShockRefs\TShockAPI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -9,13 +9,13 @@ using UserSpecificFunctions.Extensions;
 
 namespace UserSpecificFunctions
 {
-	[ApiVersion(1, 23)]
+	[ApiVersion(1, 25)]
 	public class UserSpecificFunctions : TerrariaPlugin
 	{
 		public override string Name { get { return "User Specific Functions"; } }
 		public override string Author { get { return "Professor X"; } }
 		public override string Description { get { return ""; } }
-		public override Version Version { get { return new Version(1, 4, 7, 0); } }
+		public override Version Version { get { return new Version(1, 4, 8, 0); } }
 
 		public Config USFConfig = new Config();
 		public Database USFDatabase = new Database();
