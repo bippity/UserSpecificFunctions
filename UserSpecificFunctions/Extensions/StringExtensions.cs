@@ -1,37 +1,38 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace UserSpecificFunctions.Extensions
 {
-	/// <summary>
-	/// Provides extension methods for the <see cref="string"/> class.
-	/// </summary>
+    /// <summary>Provides extension methods for the <see cref="String"/> type.</summary>
     public static class StringExtensions
     {
-        public static string SuffixPossesion(this string source)
+        /// <summary>Returns a Color representation of the given string.</summary>
+        /// <param name="str">The color string.</param>
+        /// <returns>A <see cref="Color"/> object.</returns>
+        public static Color ToColor(this string str)
         {
-            return source + (source.EndsWith("s") ? "'" : "'s");
-        }
-
-		/// <summary>
-		/// Attempts to convert a string to a Color.
-		/// </summary>
-		/// <param name="source">The string to convert.</param>
-		/// <returns>A <see cref="Color"/> object.</returns>
-        public static Color ToColor(this string source)
-        {
-            string[] color = source.Split(',');
             byte r, g, b;
-
-            if (color.Length == 3 && byte.TryParse(color[0], out r) && byte.TryParse(color[1], out g) && byte.TryParse(color[2], out b))
+            string[] color = str.Split(',');
+            if (color.Length != 3)
             {
-                return new Color(r, g, b);
+                throw new ArgumentException("The color provided was not in the correct format (r,g,b)", nameof(str));
             }
-            else
-                throw new Exception("[USF] An error occured at 'ToColor'");
+
+            if (!byte.TryParse(color[0], out r))
+            {
+                throw new ArgumentException("The color provided was not in the correct format; cannot parse 'red' value.", nameof(str));
+            }
+
+            if (!byte.TryParse(color[1], out g))
+            {
+                throw new ArgumentException("The color provided was not in the correct format; cannot parse 'green' value.", nameof(str));
+            }
+
+            if (!byte.TryParse(color[2], out b))
+            {
+                throw new ArgumentException("The color provided was not in the correct format; cannot parse 'blue' value.", nameof(str));
+            }
+
+            return new Color(r, g, b);
         }
     }
 }
