@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define DEBUG
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -125,14 +127,53 @@ namespace UserSpecificFunctions.Modules
             return true;
         }
 
-        private static void UserSpecificFunctionsCommand(CommandArgs args)
+        private static void UserSpecificFunctionsCommand(CommandArgs e)
         {
-            if (args.Parameters.Count < 0)
+            if (e.Parameters.Count < 1 || e.Parameters.Count > 3 || e.Parameters[0].ToLower() == "help")
             {
-                args.Player.SendErrorMessage("Invalid syntax! Proper syntax:");
-                args.Player.SendErrorMessage($"{Commands.Specifier}us prefix <player name> <prefix>");
-                args.Player.SendErrorMessage($"{Commands.Specifier}us suffix <player name> <suffix>");
-                args.Player.SendErrorMessage($"{Commands.Specifier}us color <player name> <color>");
+                //e.Player.SendErrorMessage("Invalid syntax! Proper syntax:");
+                //e.Player.SendErrorMessage($"{Commands.Specifier}us prefix <player name> <prefix>");
+                //e.Player.SendErrorMessage($"{Commands.Specifier}us suffix <player name> <suffix>");
+                //e.Player.SendErrorMessage($"{Commands.Specifier}us color <player name> <color>");
+                //return;
+                SendInvalidSyntax(e);
+                return;
+            }
+        }
+
+        private static void SendInvalidSyntax(CommandArgs e)
+        {
+            Dictionary<string, string> help = new Dictionary<string, string>()
+            {
+                { "prefix", "Sets the player's chat prefix" },
+                { "suffix", "Sets the player's chat suffix" },
+                { "color", "Sets the player's chat color" },
+                { "remove", "Removes the player's (pre/suf)fix or chat color" },
+                { "reset", "Resets the player's chat information" },
+                { "purge", "Removes all empty entries from the database" },
+                { "read", "Outputs the player's chat information" }
+            };
+
+            int pageNum;
+            if (!PaginationTools.TryParsePageNumber(e.Parameters, 1, e.Player, out pageNum))
+            {
+                if (!help.ContainsKey(e.Parameters[1]))
+                {
+                    e.Player.SendErrorMessage("Invalid command name or page provided.");
+                    return;
+                }
+
+                e.Player.SendInfoMessage($"Sub-command: {e.Parameters[1]}");
+                e.Player.SendInfoMessage($"Help: {help[e.Parameters[1]]}");
+            }
+            else
+            {
+                PaginationTools.SendPage(e.Player, pageNum, help.Keys.Select(p => $"{p} - {help[p]}"), help.Count,
+                    new PaginationTools.Settings()
+                    {
+                        HeaderFormat = $"UserSpecificFunctions Help({{0}}/{{1}})",
+                        FooterFormat = $"Type {Commands.Specifier}us help {{0}} for more."
+                    });
             }
         }
     }

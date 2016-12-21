@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define DEBUG
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +16,11 @@ using UserSpecificFunctions.Extensions;
 
 namespace UserSpecificFunctions.Modules
 {
+    public enum DatabaseUpdate
+    {
+        Prefix, Suffix, ChatColor, Permissions
+    }
+
     /// <summary>Provides database functionality.</summary>
     public class DatabaseModule : IModule
     {
@@ -167,7 +174,116 @@ namespace UserSpecificFunctions.Modules
                     playerInfo = await GetPlayerByIdAsync(playerId);
                 }
 
-            });
+                if (playerInfo == null)
+                {
+                    await AddPlayerAsync(new PlayerInfo() { UserID = playerId, Suffix = suffix });
+                }
+                else
+                {
+                    playerInfo.Suffix = suffix;
+                    db.Query("UPDATE UserSpecificFunctions SET Suffix = @0 WHERE UserID = @1;", suffix, playerId.ToString());
+                }
+
+            }).LogExceptions();
+        }
+
+        public Task SetColorAsync(int playerId, string color)
+        {
+            PlayerInfo playerInfo;
+
+            return Task.Run(async () => 
+            {
+
+                TSPlayer tsplr = TShock.Players.FirstOrDefault(p => p?.User?.ID == playerId);
+                if (tsplr != null)
+                {
+                    playerInfo = tsplr.GetPlayerInfo();
+                }
+                else
+                {
+                    playerInfo = await GetPlayerByIdAsync(playerId);
+                }
+
+                if (playerInfo == null)
+                {
+                    await AddPlayerAsync(new PlayerInfo() { UserID = playerId, Color = color });
+                }
+                else
+                {
+                    playerInfo.Color = color;
+                    db.Query("UPDATE UserSpecificFunctions SET Color = @0 WHERE UserID = @1;", color, playerId.ToString());
+                }
+
+            }).LogExceptions();
+        }
+
+        public Task UpdatePlayer(PlayerInfo playerInfo, DatabaseUpdate updateType)
+        {
+            return Task.Run(() => 
+            {
+
+                //TSPlayer tsplr = TShock.Players.First(p => p?.User?.ID == playerId);
+                //if (tsplr == null)
+                //{
+                //    playerInfo = tsplr.GetPlayerInfo();
+                //}
+                //else
+                //{
+                //    playerInfo = await GetPlayerByIdAsync(playerId);
+                //}
+
+                //switch (updateType)
+                //{
+                //    case DatabaseUpdate.Prefix:
+                //        {
+
+                //        }
+                //        break;
+
+                //    case DatabaseUpdate.Suffix:
+                //        {
+
+                //        }
+                //        break;
+
+                //    case DatabaseUpdate.ChatColor:
+                //        {
+
+                //        }
+                //        break;
+
+                //    case DatabaseUpdate.Permissions:
+                //        {
+
+                //        }
+                //        break;
+                //}
+                if (updateType == 0)
+                {
+                    return;
+                }
+
+                StringBuilder _stringBuilder = new StringBuilder();
+                if ((updateType & DatabaseUpdate.Prefix) == DatabaseUpdate.Prefix)
+                {
+                    _stringBuilder.Append($"Prefix = {playerInfo.Prefix}");
+                }
+                if ((updateType & DatabaseUpdate.Suffix) == DatabaseUpdate.Suffix)
+                {
+                    _stringBuilder.Append($"Suffix = {playerInfo.Suffix}");
+                }
+                if ((updateType & DatabaseUpdate.ChatColor) == DatabaseUpdate.ChatColor)
+                {
+                    _stringBuilder.Append($"Color = {playerInfo.Color}");
+                }
+                if ((updateType & DatabaseUpdate.Permissions) == DatabaseUpdate.Permissions)
+                {
+                    _stringBuilder.Append($"Permissions = {playerInfo.Permissions.GetPermissions().Join(",")}");
+                }
+
+                db.Query($"UPDATE UserSpecificFunctions SET {string.Join(", ", _stringBuilder.ToString())} WHERE UserID = {playerInfo.UserID}");
+
+            }).LogExceptions();
         }
     }
 }
